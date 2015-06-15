@@ -1,0 +1,63 @@
+<html>
+	<head>
+		<title>Apenas Um Teste</title>
+		<meta charset="UTF-8">
+
+		
+
+	</head>
+	<body>
+
+		<td>
+			<tr><img src="tom-jobim.jpg" width="100" height="100"></tr>
+			<tr><strong>Tom Jobim</strong></tr>
+		</td>
+
+		<p>O Brasil não é para principiantes.</p>
+
+		<tr>
+			<text id="qtd_likes" >0</text> people like this
+			<button id="likes">Like</button>
+		</tr>
+		
+		
+		<p >Comentários:</p>
+		
+		<div id="comments_line">
+		</div>
+
+
+		<tr>
+			<td><textarea id="comment_text"cols="50" rows="4"></textarea>
+			<button id="comments_button">Comentar</button></td>
+		<tr>	
+
+		<script type="text/javascript">
+		 var like_button = document.getElementById("likes");
+		 var comments_button = document.getElementById("comments_button");
+		 var qtd_likes=0;
+		 like_button.onclick = function () {
+		 	likes = document.getElementById("qtd_likes");
+		 	qtd_likes++; 
+		 	likes.innerHTML = qtd_likes;
+		 	
+		 }
+
+		 comments_button.onclick = function () {
+		 	comment = document.getElementById("comments_line");
+		 	comment.style.backgroundColor = 'lightgray'
+		 	text_value = document.getElementById("comment_text");
+		 	comment.appendChild(document.createElement("tr")).appendChild(document.createTextNode(text_value.value));
+		 //	comments = document.getElemetsByTagName("comments");// tag.style.background = "gray";s
+
+		 	text_value.value = "";
+		 	
+		 	// icomp.style.cssText = "color:black";
+
+		 	// resultsElement.innerHTML += "Element: " + elems[i].id + "\n";
+		 }
+		</script>
+		<!-- link do jogo -->
+		<!-- http://jogos360.uol.com.br/dots_2.html -->
+	</body>
+</html>s
