@@ -1,0 +1,363 @@
+<html>
+	<head>
+		<title>Jogo dos pontos</title>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="styles.css">
+	</head>
+
+	<body onload="myFunction()">
+		
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						<table class="table">
+							<tbody id="table" >	
+							</tbody>
+						</table>
+					</td>
+					<td>
+						<table class="cxtexto square curved padding">
+							<tbody>	
+								<tr>
+									<td id="p1"></td>
+									<td id="p2"></td>
+								</tr>
+
+								<tr>
+									<td><img src="p1.gif" class="p1"></img></td>
+									<td><img src="p2.gif" class="p2"></img></td>
+								</tr>
+								
+								<tr>
+									<td id="points_p1">0</td>
+									<td id="points_p2">0</td>
+								</tr>
+
+								<tr id="winner"></tr>
+
+								<tr>
+									<td colspan="2">
+										<button onclick="reset()">Restart</button>
+									</td>
+								</tr>
+							</tbody>
+						
+						</table>
+					</td>
+				</tr>
+			</tbody>	
+		</table>
+
+
+		
+
+		
+	</body>
+
+	<script type="text/javascript">	
+
+		var p1, p2, IDidPoint;
+		var points_p1, points_p2;
+
+		function initGame(){
+			p1=true;
+			p2=false;
+			IDidPoint=false;
+			points_p1 = 0;
+			points_p2 = 0;
+		}
+
+		function myFunction() {
+			m = 18;
+			
+			tableBody = document.getElementById("table");
+
+		    for(var i=0;i <= m;i++){
+		    	if (i % 2 == 0){
+		    		row = tableBody.appendChild(document.createElement("tr"));
+			    	for(var j=0;j <= m;j++){	
+			    		if (j % 2 == 0){	
+			    			col = row.appendChild(document.createElement("td"));	    	
+				    		col.appendChild(document.createElement("img"));
+				    		point = col.children.item("img");
+				    		point.setAttribute("src","d.gif");
+				    		point.setAttribute("class","d");
+				    	}	
+			    		else{
+			    			col = row.appendChild(document.createElement("td"));
+				    		col.appendChild(document.createElement("img"));
+				    		h0 = col.children.item("img");
+				    		h0.setAttribute("src","h0.gif");
+				    		h0.setAttribute("class","h0");
+				    		h0.setAttribute("onclick","onclick_lineH(this)");
+				    		h0.setAttribute("id",i+","+j);
+				    		h0.setAttribute("data-wasClicked","false");
+				    	}
+			    	}
+			    }
+	        	else{
+    				row = tableBody.appendChild(document.createElement("tr"));
+	        		for(var j=0;j <= m ;j++){
+	        			if (j % 2 == 0){
+	        				col = row.appendChild(document.createElement("td"));
+				    		col.appendChild(document.createElement("img"));
+				    		v0 = col.children.item("img");
+				    		v0.setAttribute("src","v0.gif");
+				    		v0.setAttribute("class","v0");
+				    		v0.setAttribute("onclick","onclick_lineV(this)");
+				    		v0.setAttribute("id",i+","+j);
+				    		v0.setAttribute("data-wasClicked","false");
+			    		}
+			    		else{	
+			    			col = row.appendChild(document.createElement("td"));
+				    		col.appendChild(document.createElement("img"));
+				    		square = col.children.item("img");
+				    		square.setAttribute("src","p0.gif");
+				    		square.setAttribute("class","p0");
+				    		square.setAttribute("id",i+","+j);
+				    		square.setAttribute("data-wasChanged","false");
+
+						}
+
+					}
+	    		} 
+    		}
+    		initGame();
+    		ofWhoseTurnItIs();
+		}          
+			
+		function onclick_lineV (elem) {
+			if(verifyElemStatus(elem) == "false"){
+				elem.setAttribute("src","v1.gif");
+				elem.setAttribute("data-wasClicked","true");
+				id = elem.getAttribute("id");
+				id = id.split(",");
+				var statusL1,statusL2,statusL3,statusR1,statusR2,statusR3;
+				console.log(id);
+				x = parseInt(id[0]);
+				y = parseInt(id[1]);
+
+				elemL1 = document.getElementById((x-1)+","+(y-1));
+				elemL2 = document.getElementById(x+","+(y-2));
+				elemL3 = document.getElementById((x+1)+","+(y-1));
+				
+				elemR1 = document.getElementById((x-1)+","+(y+1));
+				elemR2 = document.getElementById(x+","+(y+2));
+				elemR3 = document.getElementById((x+1)+","+(y+1));
+		
+
+				if(verifyElem(elemL1) == true){
+					statusL1 = verifyElemStatus(elemL1);
+					
+				}
+
+				if(verifyElem(elemL2) == true){
+					statusL2 = verifyElemStatus(elemL2);
+					
+				}
+
+				if(verifyElem(elemL3) == true){
+					statusL3 = verifyElemStatus(elemL3);
+				}
+
+				
+
+				if(statusL1=="true" && statusL2=="true" && statusL3=="true"){
+					squareL = document.getElementById(x +","+(y-1));
+					if(verifySquareStatus(squareL) == "false" ){
+						if(p1==true){
+							squareL.setAttribute("src","p1.gif");
+							points_p1++;
+							document.getElementById("points_p1").innerHTML = points_p1;
+						}
+						if(p2==true){
+							squareL.setAttribute("src","p2.gif");
+							points_p2++;
+							document.getElementById("points_p2").innerHTML = points_p2;	
+						}
+						squareL.setAttribute("data-wasChanged","true");
+						IDidPoint=true;
+					}
+				}
+
+
+
+				if(verifyElem(elemR1) == true){
+					statusR1 = verifyElemStatus(elemR1);
+				}
+
+				if(verifyElem(elemR2) == true){
+					statusR2 = verifyElemStatus(elemR2);
+				}
+
+				if(verifyElem(elemR3) == true){
+					statusR3 = verifyElemStatus(elemR3);
+				}
+
+
+				if(statusR1 == "true" && statusR2 == "true" && statusR3 == "true"){
+					squareR = document.getElementById(x +","+(y+1));
+					if(verifySquareStatus(squareR) == "false" ){
+						if(p1==true){
+							squareR.setAttribute("src","p1.gif");
+							points_p1++;
+							document.getElementById("points_p1").innerHTML = points_p1;
+						}
+						if(p2==true){
+							squareR.setAttribute("src","p2.gif");
+							points_p2++;
+							document.getElementById("points_p2").innerHTML = points_p2;	
+						}
+						squareR.setAttribute("data-wasChanged","true");
+						IDidPoint=true;
+					}
+				}
+					
+				passTheTime();
+				ofWhoseTurnItIs();		
+			}	
+		}		
+
+		function onclick_lineH (elem) {
+
+			if(verifyElemStatus(elem) == "false"){
+				elem.setAttribute("src","h1.gif");
+				elem.setAttribute("data-wasClicked","true");
+				id = elem.getAttribute("id");
+				id = id.split(",");
+				console.log(id);
+
+				var statusUp1,statusUp2,statusUp3,statusDown1,statusDown2,statusDown3;
+
+				x = parseInt(id[0]);
+				y = parseInt(id[1]);
+
+				elemUp1 = document.getElementById((x-1)+","+(y-1));
+				elemUp2 = document.getElementById((x-2) +","+y);
+				elemUp3 = document.getElementById((x-1)+","+(y+1));
+
+				elemDown1 = document.getElementById((x+1)+","+(y-1));
+				elemDown2 = document.getElementById((x+2)+","+y);
+				elemDown3 = document.getElementById((x+1)+","+(y+1));
+
+
+				if(verifyElem(elemUp1) == true){
+					statusUp1 = verifyElemStatus(elemUp1);
+				}
+
+				if(verifyElem(elemUp2) == true){
+					statusUp2 = verifyElemStatus(elemUp2);
+				}
+
+				if(verifyElem(elemUp3) == true){
+					statusUp3 = verifyElemStatus(elemUp3);
+				}
+
+				if(statusUp1 == "true" && statusUp2 == "true" && statusUp3 == "true"){
+					squareUp = document.getElementById((x-1)+","+y);
+					if(verifySquareStatus(squareUp) == "false"){
+						if(p1==true){
+							squareUp.setAttribute("src","p1.gif");
+							points_p1++;
+							document.getElementById("points_p1").innerHTML = points_p1;
+						}
+						if(p2==true){
+							squareUp.setAttribute("src","p2.gif");
+							points_p2++;
+							document.getElementById("points_p2").innerHTML = points_p2;	
+						}
+						squareUp.setAttribute("data-wasChanged","true");
+					}
+					IDidPoint=true;
+				}
+
+				if(verifyElem(elemDown1) == true){
+					statusDown1 = verifyElemStatus(elemDown1);
+				}
+
+				if(verifyElem(elemDown2) == true){
+					statusDown2 = verifyElemStatus(elemDown2);
+				}
+
+				if(verifyElem(elemDown3) == true){
+					statusDown3 = verifyElemStatus(elemDown3);
+				}
+
+				if(statusDown1 == "true" && statusDown2 == "true" && statusDown3 == "true"){
+					squareDown = document.getElementById((x+1)+","+y);
+					if(verifySquareStatus(squareDown) == "false" ){
+						if(p1==true){
+							squareDown.setAttribute("src","p1.gif");
+							points_p1++;
+							document.getElementById("points_p1").innerHTML = points_p1;
+						}
+						if(p2==true){
+							squareDown.setAttribute("src","p2.gif");
+							points_p2++;
+							document.getElementById("points_p2").innerHTML = points_p2;	
+						}
+						squareDown.setAttribute("data-wasChanged","true");
+						IDidPoint=true;
+					}
+				}
+				passTheTime();
+				ofWhoseTurnItIs();
+			}		
+		}
+
+		function reset(){
+			location.reload();
+		}
+
+		function verifyElem(elem){
+			if(elem != null){
+				return true;
+			}	
+			return false;
+		}
+
+		function verifyElemStatus(elem){
+			cond = elem.getAttribute("data-wasClicked")	
+			return cond;
+		}
+
+		function verifySquareStatus(elem){
+			cond = elem.getAttribute("data-wasChanged")	
+			return cond;
+		}
+
+		function ofWhoseTurnItIs(){
+			if(p1==true){
+				document.getElementById("p1").innerHTML = "Player 1".bold();
+				document.getElementById("p2").innerHTML = "Player 2";
+			}
+			if(p2==true){
+				document.getElementById("p2").innerHTML = "Player 2".bold();
+				document.getElementById("p1").innerHTML = "Player 1";
+			}
+		}
+
+		function passTheTime(){
+			if(IDidPoint == false){ // quando for verdadeiro não entra na condição, permanece a vez do jogador que fez o ponto
+				console.log("p1 antes de entrar no if:"+p1);
+				if(p1==true){
+					p1=false;
+					p2=true;
+				}
+				else{
+					p1=true;
+					p2=false;
+					console.log("p1 era mentira"	);
+				}
+
+			}
+			console.log("p1:"+p1);
+			console.log("p2:"+p2);
+			console.log("fiz ponto:"+IDidPoint);
+			IDidPoint = false;
+
+		}
+
+	</script>
+</html>
