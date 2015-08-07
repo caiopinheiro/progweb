@@ -72,9 +72,9 @@ class AlunoController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id=0)
     {
-        if($id == NULL)
+        if($id == 0)
             $model = Aluno::findOne(['matricula' => 21202432]);
         else
             $model = $this->findModel($id);           
